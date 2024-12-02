@@ -4,6 +4,9 @@ source "https://rubygems.org"
 gem "rails", "~> 7.2.2"
 # Гем devise для авторизации
 gem 'devise', '~> 4.9.2'
+# Гемы для авторизации через google
+gem 'omniauth-google-oauth2'
+gem "omniauth-rails_csrf_protection"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 # Use sqlite3 as the database for Active Record
