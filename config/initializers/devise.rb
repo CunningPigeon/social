@@ -10,7 +10,7 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
   # Реализует вход в Google
-  config.omniauth :google_oauth2, '456399901144-a00g85uq7ubgnqbq20qs4d8j34q0b194.apps.googleusercontent.com', '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'
+  config.omniauth :google_oauth2, ENV["GOOGLE_CLIENT_ID"], ENV["GOOGLE_SECRET"]
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
