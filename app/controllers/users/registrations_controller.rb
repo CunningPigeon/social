@@ -60,6 +60,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super(resource)
   # end
   def after_sign_up_path_for(resource)
-    profile_path # замените на путь к вашему профилю
+    profile_path 
   end
 end

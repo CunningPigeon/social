@@ -1,5 +1,9 @@
 class PagesController < ApplicationController
-  before_action :set_user, only: %i[edit update]
+  before_action :set_user, only: %i[edit update show]
+
+  def index
+    @users = User.all
+  end
 
   def edit
   end
@@ -9,6 +13,8 @@ class PagesController < ApplicationController
   end
 
   def profile
+    @user = current_user
+    @posts = @user.posts.order(created_at: :desc)
   end
 
   def update
@@ -24,15 +30,24 @@ class PagesController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-    @user.destroy
+  
+   #@user = current_user
+  
+  if @user.destroy
+    Rails.logger.debug "Пользователь успешно удален: #{@user.inspect}"
     redirect_to root_path, notice: 'Пользователь успешно удален.'
+  else
+    Rails.logger.debug "Ошибка при удалении пользователя: #{@user.errors.full_messages.join(", ")}"
+    redirect_to root_path, alert: 'Не удалось удалить пользователя.'
   end
+  end
+  
 
   private 
 
   def set_user
-    @user = User.find(params[:id]) # Находим пользователя по ID из параметров
-    Rails.logger.debug "Пользователь загружен: #{@user.inspect}" # Выводим информацию о пользователе в лог
+    @user = User.find(params[:id]) 
+    Rails.logger.debug "Пользователь загружен: #{@user.inspect}" 
   end
 
   def user_params

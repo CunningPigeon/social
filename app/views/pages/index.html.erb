@@ -1,7 +1,19 @@
 <% if user_signed_in? %>
-  <h1>Welcome Home, <%= current_user.email %></h1>
-  <%= link_to 'Профиль', profile_path %> | 
+  <h1>Домашняя страница</h1>
+  <%= link_to 'Профиль', profile_path %> <%= current_user.email %> | 
   <%= link_to 'Выход', destroy_user_session_path, data: { turbo_method: :delete } %>
+  <h2>Пользователи:</h2>
+<% if @users.any? %>
+  <ul>
+    <% @users.each do |user| %>
+      <li>
+        <h3><%= link_to user.email, page_path(user) %></h3>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Нет пользователей.</p>
+<% end %>
 <% else %>
   <h1>Home</h1>
   <%= link_to 'Вход', new_user_session_path %> |

@@ -1,10 +1,9 @@
-<h1>Welcome Profile, <%= current_user.email %></h1>
-
+<h1>Профиль, <%= current_user.email %></h1>
+<%= link_to "Вернуться на домашнюю профиля", root_path %>
 
 <%= form_with(model: @user, local: true) do |f| %>
   <div class="field">
-    <%= f.label :surname, 'Фамилия' %> 
-    <%= current_user.surname %>
+    <p>Фамилия: <%= current_user.surname %></p>
   </div>
   <div class="field">
     <%= f.label :name, 'Имя'  %> 
@@ -20,11 +19,11 @@
   </div>
   <div class="field">
     <%= f.label :email, 'Почта' %>
-  <%= current_user.email %>
+    <%= current_user.email %>
   </div>
   <div class="field">
     <%= f.label :gender, 'Пол' %>
-  <%= current_user.gender %>
+    <%= current_user.gender %>
   </div>
   <div class="field">
     <%= f.label :date_birth, 'Дата рождения' %>
@@ -42,12 +41,33 @@
     <%= f.label :description, 'О себе' %>
     <%= current_user.description %>
   </div>
-
   <div class="field">
-  <%= f.label :status%>
-  <%= current_user.status %>
+    <%= f.label :status %>
+    <%= current_user.status %>
   </div>
 
-<%= link_to 'Редактировать профиль', edit_page_path(current_user) %>
+  <%= link_to 'Редактировать профиль', edit_page_path(current_user) %> <br/>
+ 
+<% end %>
 
+<div> 
+<%= link_to 'Создать пост', new_post_path(current_user.id) %> <br/>
+
+</div>
+
+<h2>Мои посты:</h2>
+<% if @posts.any? %>
+  <ul>
+    <% @posts.each do |post| %>
+      <li>
+        <h3><%= link_to post.title, post_path(post) %></h3>
+        <p><%= post.content.truncate(100) %></p>
+        <p><%= post.created_at.strftime("%d %B %Y") %></p>
+        <%= link_to 'Редактировать пост', edit_post_path(post.id) %> | 
+        <%= button_to "Удалить пост", post, method: :delete, data: { confirm: 'Вы уверены, что хотите удалить этот пост?' }%>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>У вас еще нет постов.</p>
 <% end %>

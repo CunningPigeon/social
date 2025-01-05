@@ -5,12 +5,16 @@ Rails.application.routes.draw do
   get 'pages/:id/edit', to: 'pages#edit', as: 'edit_page'
   resources :users
   resources :pages
+  resources :posts
   devise_for :user,
       controllers: {
         omniauth_callbacks: 'users/omniauth_callbacks',
         sessions: 'users/sessions',
         registrations: 'users/registrations'
       }
+  resources :users do
+    resources :posts
+  end
 
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

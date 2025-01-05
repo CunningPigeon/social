@@ -24,7 +24,7 @@
   </div>
   <div class="field">
     <%= f.label :gender, 'Пол' %>
-    <%= f.select :gender, options_for_select([['Мужской', 'male'], ['Женский', 'female'], ['Другой', 'other']], @user.gender) %>
+    <%= f.select :gender, options_for_select([['Мужской', 'Мужской'], ['Женский', 'Женский'], ['Другой', 'other']], @user.gender) %>
 
   </div>
   <div class="field">
@@ -54,7 +54,6 @@
 <% end %>
 
 <div>
-<%= link_to "Удалить пользователя", page_path(@user), method: :delete, data: { confirm: 'Вы уверены, что хотите удалить аккаунт?' } %> |
 <%= link_to "Вернуться на страницу профиля", profile_path %>
 </div>
 
