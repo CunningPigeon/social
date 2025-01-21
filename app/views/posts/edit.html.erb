@@ -1,0 +1,27 @@
+<% provide(:title, "Edit Post") %>
+
+<h1>Редактировать Пост</h1>
+
+<% if @post %>
+  <%= form_with(model: @post, local: true) do |form| %>
+    <%= render 'error_messages', object: @post %>
+
+    <div class="field">
+      <%= form.label :title, "Заголовок" %>
+      <%= form.text_field :title, required: true %>
+    </div>
+
+    <div class="field">
+      <%= form.label :content, "Содержание" %>
+      <%= form.text_area :content, required: true %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit "Обновить пост" %>
+    </div>
+  <% end %>
+<% else %>
+  <p>Пост не найден. Пожалуйста, проверьте ссылку или вернитесь на страницу со списком постов.</p>
+<% end %>
+
+<%= link_to 'Назад', profile_path %>

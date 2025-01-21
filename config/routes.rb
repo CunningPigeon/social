@@ -1,7 +1,25 @@
 Rails.application.routes.draw do
-  devise_for :users
-  root 'pages#index'
-  get 'pages/index'
+  root 'users#index'
+  get 'profile', to: 'users#profile', as: 'profile'
+  # get 'edit', to: 'pages#edit', as: 'edit_page'
+  get 'users/:id/edit', to: 'users#edit', as: 'edit_page'
+
+  devise_for :users, controllers: {
+    omniauth_callbacks: 'users/omniauth_callbacks',
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
+  }
+  resources :users
+  resources :users do
+    resources :posts, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+      resources :comments, only: [:create, :edit, :update, :destroy]
+    end
+  end
+
+  
+  resources :posts do
+    resources :comments
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
