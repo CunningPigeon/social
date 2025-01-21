@@ -2,22 +2,6 @@
   <h1><%= @post.title %></h1>
   <p><%= @post.hashtags %></p>
   <p><%= @post.content %></p>
-
-  <% if @post.image.attached? %>
-    <%= image_tag @post.image %>
-  <% end %>
-
-  <% if @post.video.attached? %>
-    <%= video_tag @post.video, controls: true %>
-  <% end %>
-
-  <% if @post.audio.attached? %>
-    <%= audio_tag @post.audio, controls: true %>
-  <% end %>
-
-  <% if @post.document.attached? %>
-    <%= link_to 'Загрузить документ', rails_blob_path(@post.document, disposition: 'attachment') %>
-  <% end %>
 <% else %>
   <p>Пост не найден.</p>
 <% end %>

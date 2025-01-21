@@ -1,4 +1,4 @@
-class PagesController < ApplicationController
+class UsersController < ApplicationController
   before_action :set_user, only: %i[edit update show]
 
   def index
@@ -10,6 +10,7 @@ class PagesController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @posts = @user.posts.order(created_at: :desc)
   end
 
   def profile
@@ -33,19 +34,19 @@ class PagesController < ApplicationController
   
    #@user = current_user
   
-  if @user.destroy
-    Rails.logger.debug "Пользователь успешно удален: #{@user.inspect}"
-    redirect_to root_path, notice: 'Пользователь успешно удален.'
-  else
-    Rails.logger.debug "Ошибка при удалении пользователя: #{@user.errors.full_messages.join(", ")}"
-    redirect_to root_path, alert: 'Не удалось удалить пользователя.'
-  end
+    if @user.destroy
+      Rails.logger.debug "Пользователь успешно удален: #{@user.inspect}"
+      redirect_to root_path, notice: 'Пользователь успешно удален.'
+    else
+      Rails.logger.debug "Ошибка при удалении пользователя: #{@user.errors.full_messages.join(", ")}"
+      redirect_to root_path, alert: 'Не удалось удалить пользователя.'
+    end
   end
   
-
   private 
 
   def set_user
+    Rails.logger.debug "Params: #{params.inspect}"
     @user = User.find(params[:id]) 
     Rails.logger.debug "Пользователь загружен: #{@user.inspect}" 
   end

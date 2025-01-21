@@ -8,6 +8,8 @@ class PostsController < ApplicationController
 
   # GET 
   def show
+    @post = Post.includes(:comments).find(params[:id])
+    @comments = @post.comments.order(created_at: :desc)
   end
 
   # GET 

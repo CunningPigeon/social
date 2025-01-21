@@ -4,25 +4,16 @@
 
 <% if @post %>
   <%= form_with(model: @post, local: true) do |form| %>
-    <% if @post.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@post.errors.count, "ошибка") %> предотвратили сохранение поста:</h2>
-        <ul>
-          <% @post.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <%= render 'error_messages', object: @post %>
 
     <div class="field">
       <%= form.label :title, "Заголовок" %>
-      <%= form.text_field :title, value: @post.title, required: true %>
+      <%= form.text_field :title, required: true %>
     </div>
 
     <div class="field">
       <%= form.label :content, "Содержание" %>
-      <%= form.text_area :content, value: @post.content, required: true %>
+      <%= form.text_area :content, required: true %>
     </div>
 
     <div class="actions">

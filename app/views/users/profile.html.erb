@@ -47,12 +47,10 @@
   </div>
 
   <%= link_to 'Редактировать профиль', edit_page_path(current_user) %> <br/>
- 
 <% end %>
 
 <div> 
-<%= link_to 'Создать пост', new_post_path(current_user.id) %> <br/>
-
+  <%= link_to 'Создать пост', new_post_path(current_user.id) %> <br/>
 </div>
 
 <h2>Мои посты:</h2>
@@ -64,7 +62,34 @@
         <p><%= post.content.truncate(100) %></p>
         <p><%= post.created_at.strftime("%d %B %Y") %></p>
         <%= link_to 'Редактировать пост', edit_post_path(post.id) %> | 
-        <%= button_to "Удалить пост", post, method: :delete, data: { confirm: 'Вы уверены, что хотите удалить этот пост?' }%>
+        <%= button_to "Удалить пост", post, method: :delete, data: { confirm: 'Вы уверены, что хотите удалить этот пост?' } %>
+
+        <%= form_with(model: [post, Comment.new]) do |form| %>
+          <div>
+            <%= form.label :content, "Ваш комментарий" %></br>
+            <%= form.text_area :content, rows: 3, cols: 50 %>
+          </div>
+          <div>
+            <%= form.submit "Добавить комментарий" %>
+          </div>
+        <% end %>
+        <h4>Комментарии:</h4>
+        <% if post.comments.any? %>
+          <ul>
+            <% post.comments.each do |comment| %>
+              <li>
+                <strong><%= comment.user.present? ? comment.user.email : 'Аноним' %>:</strong>
+                <p><%= comment.content %></p>
+                <% if current_user == comment.user || current_user == post.user %>
+                <%= button_to "Удалить комментарий", [post, comment], method: :delete, data: { confirm: 'Вы уверены, что хотите удалить этот комментарий?' } %>
+              <% end %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p>Нет комментариев.</p>
+        <% end %>
+
       </li>
     <% end %>
   </ul>

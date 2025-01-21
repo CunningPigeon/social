@@ -1,13 +1,13 @@
 <% if user_signed_in? %>
   <h1>Домашняя страница</h1>
-  <%= link_to 'Профиль', profile_path %> <%= current_user.email %> | 
+  <%= link_to 'Профиль', user_path(current_user) %> <%= current_user.email %> | 
   <%= link_to 'Выход', destroy_user_session_path, data: { turbo_method: :delete } %>
   <h2>Пользователи:</h2>
 <% if @users.any? %>
   <ul>
     <% @users.each do |user| %>
       <li>
-        <h3><%= link_to user.email, page_path(user) %></h3>
+        <h3><%= link_to user.email, user_path(user) %></h3>
       </li>
     <% end %>
   </ul>
@@ -18,5 +18,4 @@
   <h1>Home</h1>
   <%= link_to 'Вход', new_user_session_path %> |
   <%= link_to "Регистрация", new_user_registration_path %>
-
 <% end %>

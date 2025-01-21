@@ -1,54 +1,27 @@
 <h1>Создание поста, <%= current_user.email %></h1>
 
 <%= form_with(model: @post, local: true) do |form| %>
-  <% if @post.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+  <%= render 'error_messages', object: @post %>
 
-      <ul>
-        <% @post.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div>
+  <div class="form-field">
     <%= form.label :title %>
     <%= form.text_field :title %>
   </div>
 
-  <div>
+  <div class="form-field">
     <%= form.label :hashtags %>
     <%= form.text_field :hashtags %>
   </div>
 
-  <div>
+  <div class="form-field">
     <%= form.label :content %>
     <%= form.text_area :content %>
   </div>
 
-  <div>
-    <%= form.label :image %>
-    <%= form.file_field :image %>
-  </div>
+  <%= render 'file_uploads', form: form %>
 
   <div>
-    <%= form.label :video %>
-    <%= form.file_field :video %>
-  </div>
-
-  <div>
-    <%= form.label :audio %>
-    <%= form.file_field :audio %>
-  </div>
-
-  <div>
-    <%= form.label :document %>
-    <%= form.file_field :document %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+    <%= form.submit 'Создать пост' %>
   </div>
 <% end %>
+

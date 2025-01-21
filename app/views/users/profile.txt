@@ -1,0 +1,144 @@
+<%= form_with(model: @user, local: true) do |f| %>
+  <div class="field">
+    <%= f.label :surname %>
+    <%= f.text_field :surname, autofocus: true, value: current_user.surname %>
+  </div>
+  <div class="field">
+    <%= f.label :name %> 
+    <%= f.text_field :name, autofocus: true, value: current_user.name %>
+  </div>
+  <div class="field"> 
+    <%= f.label :patron %>
+    <%= f.text_field :patron, autofocus: true, value: current_user.patron %>
+  </div>
+  <div class="field">
+    <%= f.label :nickname %>
+    <%= f.text_field :nickname, autofocus: true, value: current_user.surname %>
+  </div>
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.email_field :email, autofocus: true, value: current_user.email %>
+  </div>
+  <div class="field">
+    <%= f.label :gender %>
+    <%= f.text_field :gender, autofocus: true, value: current_user.gender %>
+  </div>
+  <div class="field">
+    <%= f.label :date_birth %>
+    <%= f.text_field :date_birth, autofocus: true, value: current_user.date_birth %>
+  </div>
+  <div class="field">
+    <%= f.label :type_activity %>
+    <%= f.text_field :type_activity, autofocus: true, value: current_user.type_activity %>
+  </div>
+  <div class="field">
+    <%= f.label :company %>
+    <%= f.text_field :company, autofocus: true, value: current_user.company %>
+  </div>
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_field :description, autofocus: true, value: current_user.description %>
+  </div>
+
+  <div class="field">
+  <%= f.label :status%>
+  <%= f.text_field :status, value: current_user.status %>
+  </div>
+
+  <div>
+  <%= f.submit %>
+  </div>
+  
+
+<% end %>
+
+
+
+<h1>Профиль, <%= current_user.email %></h1>
+<%= link_to "Вернуться на домашнюю профиля", root_path %>
+
+<%= form_with(model: @user, local: true) do |f| %>
+  <div class="field">
+    <p>Фамилия: <%= current_user.surname %></p>
+  </div>
+  <div class="field">
+    <%= f.label :name, 'Имя'  %> 
+    <%= current_user.name %>
+  </div>
+  <div class="field"> 
+    <%= f.label :patron, 'Отчество' %> 
+    <%= current_user.patron %>
+  </div>
+  <div class="field">
+    <%= f.label :nickname, 'Логин' %>
+    <%= current_user.nickname %>
+  </div>
+  <div class="field">
+    <%= f.label :email, 'Почта' %>
+    <%= current_user.email %>
+  </div>
+  <div class="field">
+    <%= f.label :gender, 'Пол' %>
+    <%= current_user.gender %>
+  </div>
+  <div class="field">
+    <%= f.label :date_birth, 'Дата рождения' %>
+    <%= current_user.date_birth %>
+  </div>
+  <div class="field">
+    <%= f.label :type_activity, 'Род деятельности' %>
+    <%= current_user.type_activity %>
+  </div>
+  <div class="field">
+    <%= f.label :company, 'Компания' %>
+    <%= current_user.company %>
+  </div>
+  <div class="field">
+    <%= f.label :description, 'О себе' %>
+    <%= current_user.description %>
+  </div>
+  <div class="field">
+    <%= f.label :status %>
+    <%= current_user.status %>
+  </div>
+
+  <%= link_to 'Редактировать профиль', edit_page_path(current_user) %> <br/>
+<% end %>
+
+
+
+
+# Посты, комментарии
+<li>
+  <h3><%= post.title %> | <%= post.created_at.strftime("%d %B %Y %H:%M") %></h3>
+  <p><%= truncate(post.content, length: 100) %></p>
+  <% if current_user == @user %>
+    <%= link_to 'Редактировать пост', edit_post_path(post.id) %> | 
+    <%= button_to "Удалить пост", post, method: :delete, data: { confirm: 'Вы уверены, что хотите удалить этот пост?' } %>
+  <% end %>
+
+  <%= form_with(model: [ post, Comment.new ]) do |form| %>
+    <div>
+      <%= form.label :content, "Ваш комментарий" %></br>
+      <%= form.text_area :content, rows: 3, cols: 50 %>
+    </div>
+    <div>
+      <%= form.submit "Добавить комментарий" %>
+    </div>
+  <% end %>
+
+  <h2>Комментарии:</h2>
+  <% if post.comments.present? %> 
+    <% post.comments.each do |comment| %>
+      <div class="comment">
+        <p><strong><%= comment.user.present? ? comment.user.email : 'Аноним' %> | <%= comment.user.created_at.strftime("%d.%m.%Y %H:%M") %> :</strong>    </p>
+        <p><%= comment.content %></p>
+        <% if current_user == comment.user || current_user == post.user %>
+          <%= button_to "Удалить комментарий", [post, comment], method: :delete, data: { confirm: 'Вы уверены, что хотите удалить этот комментарий?' } %>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>Нет комментариев.</p>
+  <% end %>
+</li>
