@@ -9,10 +9,11 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
-  resources :users
+  resources :subscriptions
   resources :users do
-    resources :posts, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
-      resources :comments, only: [:create, :edit, :update, :destroy]
+      resources :subscriptions, only: [:create, :destroy]
+      resources :posts, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+        resources :comments, only: [:create, :edit, :update, :destroy]
     end
   end
 

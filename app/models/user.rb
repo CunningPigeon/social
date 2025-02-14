@@ -1,15 +1,35 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   has_many :posts
   has_many :comments
+
+  # Подписки
+  has_many :subscriptions, foreign_key: :follower_id, dependent: :destroy
+  has_many :followed_users, through: :subscriptions, source: :followed
+
+  # Подписчики
+  has_many :inverse_subscriptions, class_name: 'Subscription', foreign_key: :followed_id, dependent: :destroy
+  has_many :followers, through: :inverse_subscriptions, source: :follower
   
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: [:google_oauth2] 
+         
   def self.from_google(u)
     create_with(uid: u[:uid], provider: 'google',
                 password: Devise.friendly_token[0, 20]).find_or_create_by!(email: u[:email])
+  end
+
+  def follow(user)
+    subscriptions.find_or_create_by(followed_id: user.id)
+  end
+
+  def unfollow(subscription_id)
+    subscription = subscriptions.find_by(id: subscription_id)
+    subscription&.destroy
+  end
+
+  def following?(user)
+    subscriptions.exists?(followed_id: user.id)
   end
 
   private
