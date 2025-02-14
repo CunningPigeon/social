@@ -1,0 +1,27 @@
+<h1>Создание поста, <%= current_user.email %></h1>
+
+<%= form_with(model: @post, local: true) do |form| %>
+  <%= render 'error_messages', object: @post %>
+
+  <div class="form-field">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label :hashtags %>
+    <%= form.text_field :hashtags %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label :content %>
+    <%= form.text_area :content %>
+  </div>
+
+  <%= render 'file_uploads', form: form %>
+
+  <div>
+    <%= form.submit 'Создать пост' %>
+  </div>
+<% end %>
+
