@@ -1,9 +1,12 @@
 class SubscriptionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user, only: [:show]
+  before_action :store_location, only: [:destroy]
 
   def show
+    @user = User.find(params[:id]) 
     @followers = @user.followers
+    @subscription_ids = @user.subscriptions.pluck(:follower_id) # переделать
   end
 
   def create
@@ -16,14 +19,16 @@ class SubscriptionsController < ApplicationController
 
   def destroy
     Rails.logger.debug "Запрос на отписку: #{params[:id]}"
-    @user = User.find(params[:user_id]) 
-    @subscription = Subscription.find_by(follower_id: current_user.id, followed_id: params[:user_id])
+    @user = User.find(params[:id]) 
+    # @subscription = Subscription.find_by(follower_id: current_user.id, followed_id: params[:user_id])
+    @subscription = Subscription.find(params[:user_id])
     
-    if current_user.unfollow(@subscription.id)
-      current_user.unfollow(@subscription.id)
-      redirect_to @user, notice: 'Вы отписались от пользователя.'
+    if @subscription.destroy
+      # current_user.unfollow(@subscription.id)
+      @subscription.destroy
+      redirect_to session[:return_to], notice: 'Подписка успешно удалена.'
     else
-      redirect_to @user, alert: 'Не удалось отписаться от пользователя.'
+      redirect_to session[:return_to], alert: 'Не удалось отписать(ся).'
     end
   end
 
@@ -31,5 +36,10 @@ class SubscriptionsController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
+  end
+
+  def store_location
+    # Cодержит URL страницы, с которой пришёл пользователь
+    session[:return_to] = request.referer
   end
 end

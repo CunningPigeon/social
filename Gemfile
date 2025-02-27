@@ -61,3 +61,4 @@ gem 'devise', '~> 4.9.2'
 # Гемы для авторизации через google
 gem 'omniauth-google-oauth2'
 gem "omniauth-rails_csrf_protection"
+gem 'dotenv-rails', '~> 3.1.7'

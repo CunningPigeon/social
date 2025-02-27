@@ -1,0 +1,17 @@
+<%= link_to 'Вернуться на страницу профиля', user_path(@user) %>
+<h1> Друзья <%= @user.nickname %></h1>
+
+<% if @friendships.present? %>
+  <% @friendships.each do |friend| %>
+    <li>
+      <%= link_to friend.friend.nickname, user_path(friend.friend) %>
+      <%= link_to friend.id, user_path(friend.friend) %>
+      <%= button_to 'Удалить из друзей', friendship_path(request), method: :delete, data: { confirm: 'Вы уверены, что хотите удалить этого друга?' }  %>
+    </li>
+  <% end %>
+<% else %>
+  <li>Нет друзей.</li>
+<% end %>
+
+
+

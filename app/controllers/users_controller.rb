@@ -3,14 +3,30 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
+
+    if params[:search].present? && params[:filters].present?
+      filters = params[:filters].map { |filter| "#{filter} LIKE ?" }.join(" OR ")
+      values = Array.new(params[:filters].size, "%#{params[:search]}%")
+      @users = User.where(filters, *values)
+    else
+      @users = User.all
+    end
+
+    # Обработка сортировки
+    if params[:sort_by].present?
+      order = params[:sort_order] == 'desc' ? 'DESC' : 'ASC'
+      @users = @users.order("#{params[:sort_by]} #{order}")
+    end
+
   end
 
   def edit
   end
-
+  
   def show
     @user = User.find(params[:id])
     @posts = @user.posts.order(created_at: :desc)
+    @subscription = current_user.subscriptions.find_by(followed_id: @user.id) if current_user
   end
 
   def profile
@@ -42,7 +58,7 @@ class UsersController < ApplicationController
       redirect_to root_path, alert: 'Не удалось удалить пользователя.'
     end
   end
-  
+
   private 
 
   def set_user

@@ -10,9 +10,18 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
   resources :subscriptions
+  resources :friend_requests do
+    member do
+      post :accept
+      delete :decline
+    end
+  end
+  resources :friendships
   resources :users do
-      resources :subscriptions, only: [:create, :destroy]
-      resources :posts, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+    resources :friendships, only: [:create, :destroy]
+    resources :friend_requests, only: [:create, :destroy]
+    resources :subscriptions, only: [:create, :destroy]
+    resources :posts, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
         resources :comments, only: [:create, :edit, :update, :destroy]
     end
   end

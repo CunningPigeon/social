@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_12_060921) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_22_135806) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -47,6 +47,26 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_12_060921) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "friend_requests", force: :cascade do |t|
+    t.integer "sender_id", null: false
+    t.integer "receiver_id", null: false
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["receiver_id"], name: "index_friend_requests_on_receiver_id"
+    t.index ["sender_id", "receiver_id"], name: "index_friend_requests_on_sender_id_and_receiver_id", unique: true
+    t.index ["sender_id"], name: "index_friend_requests_on_sender_id"
+  end
+
+  create_table "friendships", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "friend_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["friend_id", "user_id"], name: "index_friendships_on_friend_id_and_user_id", unique: true
+    t.index ["user_id", "friend_id"], name: "index_friendships_on_user_id_and_friend_id", unique: true
   end
 
   create_table "posts", force: :cascade do |t|
