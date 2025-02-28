@@ -1,0 +1,8 @@
+<% if @post %>
+  <h1><%= @post.title %></h1>
+  <p><%= @post.hashtags %></p>
+  <p><%= @post.content %></p>
+<% else %>
+  <p>Пост не найден.</p>
+<% end %>
+

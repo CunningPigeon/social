@@ -1,0 +1,40 @@
+<div class="field">
+  <%= f.label :surname, 'Фамилия' %>
+  <%= f.text_field :surname, value: user.surname %>
+</div>
+<div class="field">
+  <%= f.label :name, 'Имя' %> 
+  <%= f.text_field :name, value: user.name %>
+</div>
+<div class="field"> 
+  <%= f.label :patron, 'Отчество' %>
+  <%= f.text_field :patron, value: user.patron %>
+</div>
+<div class="field">
+  <%= f.label :nickname, 'Логин' %>
+  <%= f.text_field :nickname, value: user.nickname %>
+</div>
+<div class="field">
+  <%= f.label :email, 'Почта' %>
+  <%= f.email_field :email, disabled: true, value: user.email %>
+</div>
+<div class="field">
+  <%= f.label :gender, 'Пол' %>
+  <%= f.select :gender, options_for_select([['Мужской', 'Мужской'], ['Женский', 'Женский'], ['Другой', 'other']], user.gender) %>
+</div>
+<div class="field">
+  <%= f.label :date_birth, 'Дата рождения' %>
+  <%= f.date_select :date_birth, start_year: 1970, end_year: Date.today.year, default: user.date_birth, include_blank: true %>
+</div>
+<div class="field">
+  <%= f.label :type_activity, 'Род деятельности' %>
+  <%= f.text_field :type_activity, value: user.type_activity %>
+</div>
+<div class="field">
+  <%= f.label :company, 'Компания' %>
+  <%= f.text_field :company, value: user.company %>
+</div>
+<div class="field">
+  <%= f.label :description, 'О себе' %>
+  <%= f.text_area :description, value: user.description %>
+</div>

@@ -1,0 +1,56 @@
+<% if user_signed_in? %>
+  <h1>Домашняя страница</h1>
+  <%= link_to 'Профиль', user_path(current_user) %> <%= current_user.email %> | 
+  <%= link_to 'Выход', destroy_user_session_path, data: { turbo_method: :delete } %>
+
+
+  <%= form_with url: users_path, method: :get, local: true do %>
+    <div>
+      <%= label_tag :search, "Поиск пользователей" %>
+      <%= text_field_tag :search, params[:search], placeholder: "Введите текст" %> <%= submit_tag "Найти" %> <br>
+
+      <%= label_tag :filters, "Выберите поля для поиска" %><br>
+      <div>
+        <%= check_box_tag 'filters[]', 'name', params[:filters]&.include?('name') %>
+        <%= label_tag 'filters_name', 'Имя' %>
+
+        <%= check_box_tag 'filters[]', 'surname', params[:filters]&.include?('surname') %>
+        <%= label_tag 'filters_surname', 'Фамилия' %>
+
+        <%= check_box_tag 'filters[]', 'email', params[:filters]&.include?('email') %>
+        <%= label_tag 'filters_email', 'Email' %>
+      </div>
+
+      <%= label_tag :sort_by, "Сортировать по" %>
+      <%= select_tag :sort_by, options_for_select([['Имя', 'name'], ['Фамилия', 'surname'], ['Email', 'email']], 
+      params[:sort_by]), class: 'form-control' %><br>
+
+      <%= label_tag :sort_order, "Порядок сортировки" %> 
+      <%= radio_button_tag :sort_order, 'asc', params[:sort_order] == 'asc' %>
+      <%= label_tag :sort_order_asc, 'По возрастанию' %><br>
+      <%= radio_button_tag :sort_order, 'desc', params[:sort_order] == 'desc' %>
+      <%= label_tag :sort_order_desc, 'По убыванию' %>
+
+      
+    </div>
+  <% end %>
+
+ <h2>Пользователи:</h2>
+  <% if @users.any? %>
+    <ul>
+      <% @users.each do |user| %>
+        <li>
+          <h3><%= link_to user.nickname, user_path(user) %> - <%= user.email %></h3>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>Нет результатов для вашего запроса.</p>
+  <% end %>
+
+<% else %>
+  <h1>Home</h1>
+  <%= link_to 'Вход', new_user_session_path %> |
+  <%= link_to "Регистрация", new_user_registration_path %>
+<% end %>
+

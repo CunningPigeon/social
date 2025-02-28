@@ -1,0 +1,30 @@
+<%= link_to 'Вернуться на страницу профиля', user_path(@user) %>
+<h1> Заявки в друзья <%= @user.nickname %></h1>
+
+<h3>Отправленные заявки</h3>
+<% if @sent_friend_requests.any? %>
+  <% @sent_friend_requests.each do |request| %>
+    <li>
+      <%= link_to request.receiver.nickname, user_path(request.receiver) %>
+      <%= link_to request.id, user_path(request.sender) %>
+      <%= button_to 'Отменить заявку', friend_request_path(request), method: :delete %>
+    </li>
+  <% end %>
+<% else %>
+  <li>Нет отправленных заявок.</li>
+<% end %>
+
+<h3>Полученные заявки</h3>
+<% if @received_friend_requests.any? %>
+  <% @received_friend_requests.each do |request| %>
+    <li>
+      <%= link_to request.sender.nickname, user_path(request.sender) %>
+      <%= link_to request.id, user_path(request.sender) %>
+      <%= button_to 'Принять заявку', accept_friend_request_path(request), method: :post %>
+      <%= button_to 'Отклонить заявку', friend_request_path(request), method: :delete %>
+    </li>
+  <% end %>
+<% else %>
+  <li>Нет полученных заявок.</li>
+<% end %>
+

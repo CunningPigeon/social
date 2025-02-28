@@ -1,0 +1,41 @@
+<%= link_to 'Вернуться на домашнюю страницу', root_path %>
+<h1><%= @user.nickname %>'s Profile</h1>
+
+<div>
+  <%= render 'user_details', user: @user %>
+</div>
+
+<div>
+  <%= link_to 'Просмотреть друзей', friendship_path(@user) %> <br>
+  <%= link_to 'Просмотреть подписчиков', subscription_path(@user) %> 
+  <% if current_user != @user %>
+    <% if current_user.friend_requests.exists?(receiver_id: @user.id) %>
+      <%= button_to 'Отменить заявку в друзья', friend_request_path(receiver_id: @user.id), method: :delete %>
+    <% else %> 
+      <%= button_to 'Отправить заявку в друзья', friend_requests_path(user_id: @user.id), method: :post %>
+    <% end %>
+
+    <% if current_user.following?(@user) %> 
+      <%= button_to 'Отписаться', user_subscription_path(@subscription.id), method: :delete, data: { confirm: "Вы действительно хотите отписаться от #{@user.nickname}?" } %>
+    <% else %> 
+      <%= button_to 'Подписаться', user_subscriptions_path(@user.id), method: :post %>
+    <% end %>
+  <% end %>
+</div>
+
+<div> 
+  <% if current_user == @user %>
+    <%= link_to 'Просмотреть заявки в друзья', friend_request_path(@user) %> <br>
+    <%= link_to 'Редактировать профиль', edit_page_path(current_user) %> <br>
+    <%= link_to 'Создать пост', new_post_path(current_user.id) %> 
+  <% end %>
+</div>
+
+<h2>Посты пользователя:</h2>
+<% if @user.posts.any? %>
+  <ul>
+    <%= render @user.posts %>
+  </ul>
+<% else %>
+  <p>У пользователя нет постов.</p>
+<% end %>

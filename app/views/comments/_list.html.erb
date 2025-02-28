@@ -1,0 +1,13 @@
+<% if post.comments.present? %> 
+  <% post.comments.each do |comment| %>
+    <div class="comment">
+      <p><strong><%= comment.user.present? ? comment.user.email : 'Аноним' %> | <%= comment.created_at.strftime("%d.%m.%Y %H:%M") %> :</strong></p>
+      <p><%= comment.content %></p>
+      <% if current_user == comment.user || current_user == post.user %>
+        <%= button_to "Удалить комментарий", [post, comment], method: :delete, data: { confirm: 'Вы уверены, что хотите удалить этот комментарий?' } %>
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <p>Нет комментариев.</p>
+<% end %>

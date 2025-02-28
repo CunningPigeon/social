@@ -1,0 +1,9 @@
+<%= form_with(model: [ post, Comment.new ]) do |form| %>
+  <div>
+    <%= form.label :content, "Ваш комментарий" %><br/>
+    <%= form.text_area :content, rows: 3, cols: 50 %>
+  </div>
+  <div>
+    <%= form.submit "Добавить комментарий" %>
+  </div>
+<% end %>
